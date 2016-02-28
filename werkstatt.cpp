@@ -1,9 +1,3 @@
-/*
- werkstatt.cpp -   
- Library for the Moog Werkstatt-01
- Moog Music Inc. 2014
- Written by Chris David Howe
- */
 
 #include "Arduino.h"
 #include "werkstatt.h"
@@ -41,6 +35,7 @@ int interface::toggle(int max)
 			buttonCounter++;
 			}
 			//reset buttonCounter to set maximum
+			\
 			if (buttonCounter == max)
 			{
 				buttonCounter = 0 ;
@@ -96,10 +91,11 @@ void noise::generate(int noise_color)
 
 /* ARPEGGIATOR */
 
-arpeggiator::arpeggiator(int arp_pin)
+arpeggiator::arpeggiator(int arp_pin, int arp_pin2)
 {
 	pinMode(arp_pin, OUTPUT);
 	_pin = arp_pin;
+	_pin2 = arp_pin2;
 	
 }
 void arpeggiator::play(float bpm, int note, int note_values)
@@ -119,8 +115,10 @@ void arpeggiator::play(float bpm, int note, int note_values)
 	float _sxf = _q/16; //sixty-fourth notes
 	
 	float _values[] = {_w, _h, _q, _qt, _e, _et, _sx, _sxt, _th, _sxf};
-
-	analogWrite(_pin, note);
+	
+		analogWrite(_pin, note);
+		analogWrite(_pin2, 0);
+	
 	delay(_values[note_values]);
 
 };
@@ -135,11 +133,11 @@ void volumecontrol::offOn(float otherBPM){
     _bpm = otherBPM;
      
     for (int i = 0; i <= (_bpm); i++){
-       if ((i%2) == 0){
+       if ((i%100) == 0){
           analogWrite(_pin, 0);
        }
        else{
-          analogWrite(_pin, 255);
+          analogWrite(_pin, 15);
        }
     }
 };
@@ -150,9 +148,9 @@ frequencyScale::frequencyScale(int freq_pin){
     pinMode(freq_pin, OUTPUT);
     _pin = freq_pin;
 }
-void frequencyScale::changePitch(){
+void frequencyScale::changePitch(int note){
 
-    analogWrite(_pin, 130);
+    analogWrite(_pin, note);
 
     /*float maxPitch = 255; 
     float minPitch = 0; 
@@ -198,8 +196,5 @@ void lfo::rate(int cv_note ,int rate_value)
 	
 	
 };
-
-
-
 
 

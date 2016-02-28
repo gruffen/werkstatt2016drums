@@ -1,10 +1,3 @@
-/*
- werkstatt.h -   
- Library for the Moog Werkstatt-01
- Moog Music Inc. 2014
- Written by Chris David Howe
-*/
-
 #include "Arduino.h"
 
 #ifndef werkstatt_h
@@ -47,10 +40,11 @@ private:
 class arpeggiator
 {
 public:
-	arpeggiator(int arp_pin);
-	void play(float bpm, int note, int note_values);
+	arpeggiator(int arp_pin, int arp_pin2);
+	void play(float bpm, int note, int note_values, int volume);
 private:
 	int _pin;
+	int _pin2;
 	float _bpm;
 };
 
@@ -66,7 +60,7 @@ private:
 class frequencyScale{ 
 public: 
     frequencyScale(int freq_pin);
-    void changePitch(); 
+    void changePitch(int note); 
 private:
     int _pin;
 };
